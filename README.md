@@ -205,8 +205,9 @@ a=plot_marker_selection(data, markers, names)
 Computing TSNE embedding
 Elapsed time: 73.77150392532349 seconds
 ```
+```
 ![image](output_25.png)
-
+```
 #### One vs all markers
 
 ```Python
