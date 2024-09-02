@@ -8,13 +8,13 @@ Problem selekcije marker gena govori o procesu identificiranja specifičnih gena
   
 Cilj selekcije je izabrati najmanji mogući skup gena (markera) koji mogu razlikovati različite stanice s visokom preciznošću. Problem zahtjeva sofisticirane statičke i računalne metode za selekciju, zbog velikog broja gena (markera), a relativnog malog broja uzoraka.  
   
-U nastavku pomoću alata scGeneFit, koji je razvijen za riješavanje problema selekcije markera gena, prikazat ćemo naše rezultate za riješavanja ovoga problema na CITEseq dataset-u.
+U nastavku pomoću alata scGeneFit, koji je razvijen za rješavanje problema selekcije markera gena, prikazat ćemo naše rezultate za rješavanja ovoga problema na CITEseq dataset-u.
   
 ## Linearno programiranje
-Linearno programiranje je metoda za rješavanje složenih problema iz stvarnog života koristeći se matematikom. Koristi se kak bi optimizirale operativnu učinkovitost, tj. izvukle najviše vrijednosti iz ograničenih resursa.
+Linearno programiranje je metoda za rješavanje složenih problema iz stvarnog života koristeći se matematikom. Koristi se kako bi se optimiziralo operativnu učinkovitost, tj. izvuklo najviše vrijednosti iz ograničenih resursa.
   
 ### Gurobi
-Gurobi je napredan softverski alat namijenjen za optimizaciju, on omogućuje rješavanje složenih matematičkih problema optimizacije s visokom efikasnošću i brzinom.Koristi se u raznim znanstevenim i industrijskim područjima (npr. financijama, logistici, energetici), gdje je potrebno naći optimalna riješenja unutar zadanih ograničenja.  
+Gurobi je napredan softverski alat namijenjen za optimizaciju, omogućuje rješavanje složenih matematičkih problema optimizacije s visokom efikasnošću i brzinom. Koristi se u raznim znanstevenim i industrijskim područjima (npr. financijama, logistici, energetici), gdje je potrebno pronaći optimalna rješenja unutar zadanih ograničenja.  
 
 Gurobi podržava više vrsta optimizacije, kao što je linearno programiranje pomoću kojega mi rješavamo naš problem.
   
@@ -83,7 +83,7 @@ def get_markers(data, labels, num_markers, method='pairwise', epsilon=1, samplin
 - data: Nxd numpy niz s koordinatama točaka, gdje je N broj točaka, a d dimenzija
 - labels: lista s oznakama (N oznaka, jedna za svaku točku)
 - num_markers: ciljani broj markera, koje treba odabrati (broj markera < d)
-- method='pairwise': uzima u obzir ograničenja koja zahtjevaju da točke iz različitih klasa budu razdvojene minimalnom udaljenosti nakon projekcije na odabrane markera. U ovoj metodi se ograničenja nasumično oadbiru (sampling_rate) i ograničavaju (n_neighbors, random_max_constraints)
+- method='pairwise': uzima u obzir ograničenja koja zahtjevaju da točke iz različitih klasa budu razdvojene minimalnom udaljenosti nakon projekcije na odabrane markere. U ovoj metodi se ograničenja nasumično odabiru (sampling_rate) i ograničavaju (n_neighbors, random_max_constraints)
 - epsilon: ograničenje će biti oblika expr > Delta, gdje je Delta jednaka epsilon puta norma najmanjeg ograničenja (default 1), najvažniji parametar, određuje opseg ograničenja, a ostali parametri određuju samo veličinu LP-a kako bi se prilgodili ograničenim računalnim resursima.
 - sampling_rate: odabire ograničenja iz nasumičnog uzroka s proporcijom samplin_rate (default 1)
 - n_neighbors: bira ograničenja iz n najbližih susjeda (default 3) 
@@ -93,7 +93,7 @@ def get_markers(data, labels, num_markers, method='pairwise', epsilon=1, samplin
 ```python
     random_max_constraints = random.randint(1, constraints.shape[0])
 ```
-- broj ograničenja je nasumičan između 1 i broja pojedinačnih ograničenja koja su deifnirana.
+- broj ograničenja je nasumičan između 1 i broja pojedinačnih ograničenja koja su definirana.
   
   
  ```Python
@@ -259,4 +259,4 @@ Elapsed time: 73.00219750404358 seconds
 ## Zaključak  
 Iz gore dobivenih podataka možemo uočiti nekoliko ključnih zaključaka. Točnost modela raste s brojem odabranih markera, ali nakon određene točke dodatni markeri više ne poboljšavaju značajno točnost. Iz toga možemo vidjeti da uz povećanje broja ograničenja točnost (accuracy) je preciznija te je vrijeme izvršavanja (time elapsed) duže. Na slikovnim prikazima vidimo minimalnu razliku za isti broj markera različitih ograničenja.
 
-Optimizacija broja markera je ključna jer manji broj markera može osigurati visoku točnost uz manju računalnu složenost. Broj ograničenja izravno utječe na vrijeme obrade, pa je važno pronaći ravnotežu između točnosti i brzine izvršavanja. Iako se može činiti da više markera znači bolje rezultate, bitnije je pronaći optimalan broj koji pruža najbolji omjer između točnosti i složenosti. Optimizacijom parametara kao što su n_neighbors i sampling_rate možemo dodatno smanjiti vrijeme obrade bez gubitka točnosti. 
+Optimizacija broja markera je ključna jer manji broj markera može osigurati visoku točnost uz manju računalnu složenost. Broj ograničenja izravno utječe na vrijeme obrade pa je važno pronaći ravnotežu između točnosti i brzine izvršavanja. Iako se može činiti da više markera znači bolje rezultate, bitnije je pronaći optimalan broj koji pruža najbolji omjer između točnosti i složenosti. Optimizacijom parametara kao što su n_neighbors i sampling_rate možemo dodatno smanjiti vrijeme obrade bez gubitka točnosti. 
