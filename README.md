@@ -232,7 +232,10 @@ Computing TSNE embedding
 Elapsed time: 73.00219750404358 seconds
 ```
 ![image](output_25_one_vs_all.png)
+## Zaključak  
+Iz gore dobivenih podataka možemo uočiti nekoliko ključnih zaključaka. Točnost modela raste s brojem odabranih markera, ali nakon određene točke dodatni markeri više ne poboljšavaju značajno točnost. Iz toga možemo vidjeti da uz povećanje broja ograničenja točnost (accuracy) je preciznija te je vrijeme izvršavanja (time elapsed) duže. 
 
+Optimizacija broja markera je ključna jer manji broj markera može osigurati visoku točnost uz manju računalnu složenost. Broj ograničenja izravno utječe na vrijeme obrade, pa je važno pronaći ravnotežu između točnosti i brzine izvršavanja. Iako se može činiti da više markera znači bolje rezultate, bitnije je pronaći optimalan broj koji pruža najbolji omjer između točnosti i složenosti. Optimizacijom parametara kao što su n_neighbors i sampling_rate možemo dodatno smanjiti vrijeme obrade bez gubitka točnosti. 
 
 ### Maksimalan broj ograničenja n = random.randint(1, constraints.shape[0])
 
@@ -251,10 +254,16 @@ Elapsed time: 73.00219750404358 seconds
   
 
 ![image 1](../10 markera s 1000 constraints.png)
+  
+![image 2](scGeneFit-python-master/examples/10 markera s 5185 constraints.png)
+![image 3](scGeneFit-python-master/examples/15 markera s 8831 constraints.png)
+![image 4](scGeneFit-python-master/examples/15 markera s 9600 constraints.png)
+![image 5](scGeneFit-python-master/examples/10 markera s 1000 constraints.png)
+![image 6](scGeneFit-python-master/examples/25 markera s 9829 constraints.png)
+![image 7](scGeneFit-python-master/examples/25 markera s 4036 constraints.png)
+![image 8](scGeneFit-python-master/examples/200 markera s 3689 constraints.png)
+![image 9](scGeneFit-python-master/examples/200 markera s 892 constraints.png)
+![image 10](scGeneFit-python-master/examples/50 markera s 2233 constraints.png)
+![image 10](scGeneFit-python-master/examples/50 markera s 5729 constraints.png)
 
-
-## Zaključak
-Iz gore dobivenih podataka možemo uočiti nekoliko ključnih zaključaka. Točnost modela raste s brojem odabranih markera, ali nakon određene točke dodatni markeri više ne poboljšavaju značajno točnost. Iz toga možemo vidjeti da uz povećanje broja ograničenja točnost (accuracy) je preciznija te je vrijeme izvršavanja (time elapsed) duže. 
-
-Optimizacija broja markera je ključna jer manji broj markera može osigurati visoku točnost uz manju računalnu složenost. Broj ograničenja izravno utječe na vrijeme obrade, pa je važno pronaći ravnotežu između točnosti i brzine izvršavanja. Iako se može činiti da više markera znači bolje rezultate, bitnije je pronaći optimalan broj koji pruža najbolji omjer između točnosti i složenosti. Optimizacijom parametara kao što su n_neighbors i sampling_rate možemo dodatno smanjiti vrijeme obrade bez gubitka točnosti. 
 
