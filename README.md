@@ -231,7 +231,7 @@ a=plot_marker_selection(data, markers2, names)
 Computing TSNE embedding
 Elapsed time: 73.00219750404358 seconds
 ```
-![image](output_25_one_vs_all.png)
+![image](output_25_one_vs_all.png)  
 ## Zaključak  
 Iz gore dobivenih podataka možemo uočiti nekoliko ključnih zaključaka. Točnost modela raste s brojem odabranih markera, ali nakon određene točke dodatni markeri više ne poboljšavaju značajno točnost. Iz toga možemo vidjeti da uz povećanje broja ograničenja točnost (accuracy) je preciznija te je vrijeme izvršavanja (time elapsed) duže. 
 
