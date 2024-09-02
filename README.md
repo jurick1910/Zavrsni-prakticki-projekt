@@ -248,16 +248,16 @@ Elapsed time: 73.00219750404358 seconds
 | 200               | 892                   | 0.8456539398862714| 40.49279451370239       |
 | 200               | 3689                  | 0.8478588836021818| 617.2766561508179       |
   
-![image](scGeneFit-python-master/examples/10 markera s 1000 constraints.png)
+![image](outputs_slike/10 markera s 1000 constraints.png)
 
 
 
-![image](scGeneFit-python-master/examples/10 markera s 5185 constraints.png)
+![image](outputs_slike/10 markera s 5185 constraints.png)
   
-![image](scGeneFit-python-master/examples/15 markera s 8831 constraints.png)
+![image](outputs_slike/15 markera s 8831 constraints.png)
   
-![image](scGeneFit-python-master/examples/15 markera s 9600 constraints.png)
-![image](scGeneFit-python-master/examples/10 markera s 1000 constraints.png)
+![image](outputs_slike/15 markera s 9600 constraints.png)
+![image](outputs_slike/10 markera s 1000 constraints.png)
 ![image](scGeneFit-python-master/examples/25 markera s 9829 constraints.png)
 ![image](scGeneFit-python-master/examples/25 markera s 4036 constraints.png)
 ![image](scGeneFit-python-master/examples/200 markera s 3689 constraints.png)
