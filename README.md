@@ -249,7 +249,7 @@ Elapsed time: 73.00219750404358 seconds
 | 200               | 892                   | 0.8456539398862714| 40.49279451370239       |
 | 200               | 3689                  | 0.8478588836021818| 617.2766561508179       |
 
-![image 1](scGeneFit-python-master/examples/10 markera s 1000 constraints.png)
+![image 1](../10 markera s 1000 constraints.png)
 
 
 
