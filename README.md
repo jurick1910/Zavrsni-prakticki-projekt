@@ -231,7 +231,7 @@ a=plot_marker_selection(data, markers2, names)
 Computing TSNE embedding
 Elapsed time: 73.00219750404358 seconds
 ```
-![image](scGeneFit-python-master/output_25_one_vs_all.png.png)  
+![image](scGeneFit-python-master/output_25_one_vs_all.png)  
   
 ### Maksimalan broj ograničenja n = random.randint(1, constraints.shape[0])
 
@@ -249,10 +249,12 @@ Elapsed time: 73.00219750404358 seconds
 | 200               | 3689                  | 0.8478588836021818| 617.2766561508179       |
   
 
-![image](../10 markera s 1000 constraints.png)
+![image](scGeneFit-python-master/examples/10 markera s 1000 constraints.png)
   
 ![image](scGeneFit-python-master/examples/10 markera s 5185 constraints.png)
+  
 ![image](scGeneFit-python-master/examples/15 markera s 8831 constraints.png)
+  
 ![image](scGeneFit-python-master/examples/15 markera s 9600 constraints.png)
 ![image](scGeneFit-python-master/examples/10 markera s 1000 constraints.png)
 ![image](scGeneFit-python-master/examples/25 markera s 9829 constraints.png)
