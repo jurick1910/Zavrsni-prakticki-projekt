@@ -38,7 +38,7 @@ x_1 - x_2 = 0
 $$
 
 
- python
+ ```python
 from gurobipy import *
 Model()
 
@@ -60,14 +60,14 @@ opt_mod.write("Zad16.lp")
 print('Objective Function Value: %f' % opt_mod.ObjVal) 
 for v in opt_mod.getVars():
     print('%s: %g' % (v.VarName, v.x))
+```
 
-
-
+```
 Objective Function Value: 0.333333
 x1: 0.333333
 x2: 0.333333
 x3: 0.333333
-
+```
 
 ## scGeneFit
 
@@ -77,9 +77,9 @@ Primjeri i kod: [https://github.com/jurick1910/Zavr-ni-prakti-ki-projekt] po uzo
 
 Glavna funkcija paketa je scGeneFit.functions.get_markers()
 
- python
+``` python
 def get_markers(data, labels, num_markers, method='pairwise', epsilon=1, sampling_rate=1, n_neighbors=3, verbose=True)
-
+```
 - data: Nxd numpy niz s koordinatama točaka, gdje je N broj točaka, a d dimenzija
 - labels: lista s oznakama (N oznaka, jedna za svaku točku)
 - num_markers: ciljani broj markera, koje treba odabrati (broj markera < d)
@@ -90,12 +90,13 @@ def get_markers(data, labels, num_markers, method='pairwise', epsilon=1, samplin
 - verbose=True: Hoće li se ispisivati informacije poput veličine LP-a ili proteklog vremena (default True).
 
 
+```python
     random_max_constraints = random.randint(1, constraints.shape[0])
-
+```
 - broj ograničenja je nasumičan između 1 i broja pojedinačnih ograničenja koja su deifnirana.
   
   
- Python
+ ```Python
 def __lp_markers(constraints, num_markers, epsilon):
     m, d = constraints.shape
     c = np.concatenate((np.zeros(d), np.ones(m)))
@@ -112,41 +113,41 @@ def __lp_markers(constraints, num_markers, epsilon):
     model.setObjective(gp.quicksum(c[i] * x[i] for i in range(d + m)), gp.GRB.MINIMIZE)
     model.optimize()
     return {"x": [x[i].x for i in range(d + m)]}
-
+```
 
 - problem selekcije marker gena rješavamo preko __lp_markers, koji smo prilagodili za Gurobi optimizator
   
 ## Rezultati
- Python
+```Python
 from scGeneFit.functions import *
 
 %matplotlib inline
 import numpy as np
 np.random.seed(0) 
-
+```
 ### Auxiliary functions
- Python
+``` Python
 from sklearn.neighbors import NearestCentroid
 clf=NearestCentroid()
 
 def performance(X_train, y_train, X_test, y_test, clf):
     clf.fit(X_train, y_train)
     return clf.score(X_test, y_test)
-
+```
 ### CITEseq primjer
 Data included in package, from 
 
 [1] Marlon Stoeckius, Christoph Hafemeister, William Stephenson, Brian Houck-Loomis, Pratip K Chattopadhyay, Harold Swerdlow, Rahul Satija, and Peter Smibert. 
 Simultaneous epitope and transcriptome measurement insingle cells. Nature Methods, 14(9):865, 2017.
 
- Python
+``` Python
 #load data from files
 [data, labels, names]= load_example_data("CITEseq")
 N,d=data.shape
-
+```
 #### Use of scGeneFit (pairwise distance constraints)
 
- Python
+``` Python
 num_markers=25
 method='pairwise'
 sampling_rate=0.1 #use 10 percent of the data to generate constraints
@@ -161,8 +162,8 @@ accuracy_markers=performance(data[:,markers], labels, data[:,markers], labels, c
 
 print("Accuracy (whole data,", d, " markers): ", accuracy)
 print("Accuracy (selected", num_markers, "markers)", accuracy_markers)
-
-
+```
+```
 Solving a linear program with 500 variables and 1282 constraints
 Set parameter Username
 Academic license - for non-commercial use only - expires 2025-05-09
@@ -194,21 +195,21 @@ Time elapsed: 68.34522414207458 seconds
 Accuracy (whole data, 500  markers):  0.8660786816757572
 Accuracy (selected 25 markers) 0.7912266450040617
 Output is truncated. View as a scrollable element or open in a text editor. Adjust cell output settings...
+```
 
-
- Python
+``` Python
 #TSNE plot
 a=plot_marker_selection(data, markers, names)
-
-
+```
+```
 Computing TSNE embedding
 Elapsed time: 73.77150392532349 seconds
-
+```
 ![image](output_25.png)
 
 #### One vs all markers
 
- Python
+```Python
 markers2=one_vs_all_selection(data,labels)
 
 accuracy=performance(data, labels, data, labels, clf)
@@ -216,19 +217,19 @@ accuracy_markers=performance(data[:,markers2], labels, data[:,markers2], labels,
 
 print("Accuracy (whole data,", d, " markers): ", accuracy)
 print("Accuracy (selected", num_markers, "markers)", accuracy_markers)
-
-
+```
+```
 Accuracy (whole data, 500  markers):  0.8660786816757572
 Accuracy (selected 25 markers) 0.7537426018335848
+```
 
-
- Python
+ ```Python
 a=plot_marker_selection(data, markers2, names)
-
-
+```
+```
 Computing TSNE embedding
 Elapsed time: 73.00219750404358 seconds
-
+```
 ![image](output_25_one_vs_all.png)
 
 
@@ -247,6 +248,11 @@ Elapsed time: 73.00219750404358 seconds
 | 200               | 892                   | 0.8456539398862714| 40.49279451370239       |
 | 200               | 3689                  | 0.8478588836021818| 617.2766561508179       |
 
+![image]()
 
 
 ## Zaključak
+Iz gore dobivenih podataka možemo uočiti nekoliko ključnih zaključaka. Točnost modela raste s brojem odabranih markera, ali nakon određene točke dodatni markeri više ne poboljšavaju značajno točnost. Iz toga možemo vidjeti da uz povećanje broja ograničenja točnost (accuracy) je preciznija te je vrijeme izvršavanja (time elapsed) duže. 
+
+Optimizacija broja markera je ključna jer manji broj markera može osigurati visoku točnost uz manju računalnu složenost. Broj ograničenja izravno utječe na vrijeme obrade, pa je važno pronaći ravnotežu između točnosti i brzine izvršavanja. Iako se može činiti da više markera znači bolje rezultate, bitnije je pronaći optimalan broj koji pruža najbolji omjer između točnosti i složenosti. Optimizacijom parametara kao što su n_neighbors i sampling_rate možemo dodatno smanjiti vrijeme obrade bez gubitka točnosti. 
+
