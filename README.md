@@ -73,7 +73,7 @@ x3: 0.333333
 
 Python kod za selekciju genetičkih markera korištenjem linearnog programiranja pomoću Gurobi optimizatora.
 
-Primjeri i kod: [link od githuba] po uzoru na algoritam opisan u [https://www.biorxiv.org/content/10.1101/599654v1](https://www.biorxiv.org/content/10.1101/599654v1)
+Primjeri i kod: [https://github.com/jurick1910/Zavr-ni-prakti-ki-projekt] po uzoru na algoritam opisan u [https://www.biorxiv.org/content/10.1101/599654v1](https://www.biorxiv.org/content/10.1101/599654v1) i riješen u  [https://github.com/solevillar/scGeneFit-python].
 
 Glavna funkcija paketa je scGeneFit.functions.get_markers()
 
