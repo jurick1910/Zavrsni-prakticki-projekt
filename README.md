@@ -232,9 +232,10 @@ Computing TSNE embedding
 Elapsed time: 73.00219750404358 seconds
 ```
 ![image](scGeneFit-python-master/output_25_one_vs_all.png)  
+![image](outputs_slike/10 markera s 1000 constraints.png)
   
 ### Maksimalan broj ograničenja n = random.randint(1, constraints.shape[0])
-```
+
 | Number of markers | Number of constraints | Accuracy          | Time elapsed (seconds) |
 |-------------------|-----------------------|-------------------|------------------------|
 | 10                | 1000                  | 0.7154462109782987| 47.69971990585327       |
@@ -247,9 +248,9 @@ Elapsed time: 73.00219750404358 seconds
 | 50                | 5729                  | 0.8131600324939074| 913.4680142402649       |
 | 200               | 892                   | 0.8456539398862714| 40.49279451370239       |
 | 200               | 3689                  | 0.8478588836021818| 617.2766561508179       |
-```
+
   
-![image](outputs_slike/10 markera s 1000 constraints.png)
+
 
 
 
