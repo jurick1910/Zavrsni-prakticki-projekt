@@ -237,6 +237,8 @@ Elapsed time: 73.00219750404358 seconds
 ```
 ![image](scGeneFit-python-master/output_25_one_vs_all.png)  
 
+Ova slika prikazuje dva grafa vizualizirana pomoću t-SNE tehnike za smanjenje dimenzionalnosti. Lijevi graf prikazuje originalne podatke u dvodimenzionalnom prostoru koristeći sve značajke, dok desni graf koristi samo 13 odabranih markera. Osi na oba grafa predstavljaju t-SNE komponente koje omogućuju prikaz podataka u dvodimenzionalnom prostoru. Različite boje prikazuju različite klase podataka, a cilj je usporediti prikaz podataka prije i nakon selekcije markera, ocjenjujući učinkovitost algoritma.
+
   
 ### Maksimalan broj ograničenja n = random.randint(1, constraints.shape[0])
 
