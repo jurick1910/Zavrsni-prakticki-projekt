@@ -208,6 +208,10 @@ Elapsed time: 73.77150392532349 seconds
 
 ![image](scGeneFit-python-master/output_25.png)
 
+Slika iz funkcije plot_marker_selection() koristi t-SNE tehniku za smanjenje dimenzionalnosti i vizualizaciju podataka. Prikazana su dva grafa jedan pored drugog: lijevi graf prikazuje originalne podatke reducirane na dvije dimenzije pomoću t-SNE metode, dok desni graf prikazuje iste podatke koristeći samo 25 odabranih markera koji su izabrani algoritmom. Osi na oba grafa prikazuju dvije t-SNE komponente koje omogućuju smještanje višedimenzionalnih podataka u dvodimenzionalni prostor.
+
+Grafovi su obojeni različitim bojama kako bi prikazali različite klase podataka. Svaka boja u grafu odgovara jednoj klasi, čije oznake su navedene u legendi s desne strane. Na taj način, moguće je jasno uočiti razlike među različitim skupinama stanica u podacima. Slika je usporedba prikaza podataka s originalnim značajkama i prikaza s odabranim značajkama, što omogućava procjenu učinkovitosti algoritma za selekciju markera. Ovi grafovi daju jasan uvid u to kako se podaci razlikuju prije i nakon selekcije markera, vizualizirajući proces selekcije značajki i smanjenja dimenzionalnosti.
+
 #### One vs all markers
 
 ```Python
