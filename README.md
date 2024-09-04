@@ -207,14 +207,11 @@ Elapsed time: 73.77150392532349 seconds
 ```
 
 ![image](scGeneFit-python-master/output_25.png)
-
-
+  
 Slika iz funkcije plot_marker_selection() koristi t-SNE tehniku za smanjenje dimenzionalnosti i vizualizaciju podataka. Prikazana su dva grafa jedan pored drugog: lijevi graf prikazuje originalne podatke reducirane na dvije dimenzije pomoću t-SNE metode, dok desni graf prikazuje iste podatke koristeći samo 25 odabranih markera koji su izabrani algoritmom. Osi na oba grafa prikazuju dvije t-SNE komponente koje omogućuju smještanje višedimenzionalnih podataka u dvodimenzionalni prostor.
 
 Grafovi su obojeni različitim bojama kako bi prikazali različite klase podataka. Svaka boja u grafu odgovara jednoj klasi, čije oznake su navedene u legendi s desne strane. Na taj način, moguće je jasno uočiti razlike među različitim skupinama stanica u podacima. Slika je usporedba prikaza podataka s originalnim značajkama i prikaza s odabranim značajkama, što omogućava procjenu učinkovitosti algoritma za selekciju markera. Ovi grafovi daju jasan uvid u to kako se podaci razlikuju prije i nakon selekcije markera, vizualizirajući proces selekcije značajki i smanjenja dimenzionalnosti.
-
-
-
+  
 #### One vs all markers
 
 ```Python
@@ -239,13 +236,9 @@ Computing TSNE embedding
 Elapsed time: 73.00219750404358 seconds
 ```
 ![image](scGeneFit-python-master/output_25_one_vs_all.png)  
-
-
-Ova slika prikazuje dva grafa vizualizirana pomoću t-SNE tehnike za smanjenje dimenzionalnosti. Lijevi graf prikazuje originalne podatke u dvodimenzionalnom prostoru koristeći sve značajke, dok desni graf koristi samo 13 odabranih markera. Osi na oba grafa predstavljaju t-SNE komponente koje omogućuju prikaz podataka u dvodimenzionalnom prostoru. Različite boje prikazuju različite klase podataka, a cilj je usporediti prikaz podataka prije i nakon selekcije markera, ocjenjujući učinkovitost algoritma.
-
-
-
   
+Ova slika prikazuje dva grafa vizualizirana pomoću t-SNE tehnike za smanjenje dimenzionalnosti. Lijevi graf prikazuje originalne podatke u dvodimenzionalnom prostoru koristeći sve značajke, dok desni graf koristi samo 13 odabranih markera. Osi na oba grafa predstavljaju t-SNE komponente koje omogućuju prikaz podataka u dvodimenzionalnom prostoru. Različite boje prikazuju različite klase podataka, a cilj je usporediti prikaz podataka prije i nakon selekcije markera, ocjenjujući učinkovitost algoritma.
+    
 ### Maksimalan broj ograničenja n = random.randint(1, constraints.shape[0])
 
 | Number of markers | Number of constraints | Accuracy          | Time elapsed (seconds) |
@@ -260,17 +253,20 @@ Ova slika prikazuje dva grafa vizualizirana pomoću t-SNE tehnike za smanjenje d
 | 50                | 5729                  | 0.8131600324939074| 913.4680142402649       |
 | 200               | 892                   | 0.8456539398862714| 40.49279451370239       |
 | 200               | 3689                  | 0.8478588836021818| 617.2766561508179       |
-
-
+  
 Tablica prikazuje kako povećanje broja markera i ograničenja utječe na točnost modela i vrijeme izvršavanja. Vidljivo je da s većim brojem markera i ograničenja, točnost modela raste, ali i vrijeme izvršavanja. Primjerice, za 10 markera vrijeme obrade raste s 47 na 816 sekundi uz umjeren porast točnosti. S 50 markera postiže se visoka točnost od 0.823, uz znatno duže vrijeme obrade (913 sekundi). Kod 200 markera, postiže se visoka točnost uz manji broj ograničenja i kraće vrijeme izvršavanja, što pokazuje da je optimizacija broja ograničenja ključna za balansiranje između točnosti i vremena izvršavanja.
-
+  
 ![image](outputs_slike/10_markera_1000_constraints.png)
 ![image](outputs_slike/10_markera_5185_constraints.png)  
 
 ![image](outputs_slike/25_markera_9829_constraints.png)
 ![image](outputs_slike/25_markera_4036_constraints.png)
 
+  
+Prva slika prikazuje rezultate za 10 markera s 1000 ograničenja i točnošću 0.715. Lijevi graf prikazuje originalne podatke, dok desni prikazuje podatke reducirane na 10 markera. Unatoč jasnom prikazu različitih klasa, točnost pokazuje da nisu svi detalji očuvani. Druga slika prikazuje rezultate za 10 markera s 5185 ograničenja i točnošću 0.728. Povećanjem broja ograničenja, desni graf postaje detaljniji, što poboljšava točnost, no vrijeme obrade se znatno povećalo.
 
+Treća slika prikazuje rezultate za 25 markera i 4036 ograničenja, s točnošću od 0.789. Veći broj markera pomaže očuvanju strukture podataka, povećavajući točnost. Četvrta slika prikazuje rezultate s 25 markera i 9829 ograničenja, s točnošću od 0.795. Povećanjem ograničenja, preciznost grafova se dodatno poboljšava, ali uz značajno dulje vrijeme obrade.
+  
 ## Zaključak  
 Iz gore dobivenih podataka možemo uočiti nekoliko ključnih zaključaka. Točnost modela raste s brojem odabranih markera, ali nakon određene točke dodatni markeri više ne poboljšavaju značajno točnost. Iz toga možemo vidjeti da uz povećanje broja ograničenja točnost (accuracy) je preciznija te je vrijeme izvršavanja (time elapsed) duže. Na slikovnim prikazima vidimo minimalnu razliku za isti broj markera različitih ograničenja.
 
