@@ -48,6 +48,71 @@ def get_markers(data, labels, num_markers, method='pairwise', epsilon=1, samplin
         : num_markers]
     return markers
 
+def get_markers_hierarchy(data, labels, num_markers, method='centers', sampling_rate=0.1, n_neighbors=3, epsilon=10, max_constraints=1000, redundancy=0.01, verbose=True):
+    """marker selection algorithm with hierarchical labels
+    data: Nxd numpy array with point coordinates, N: number of points, d: dimension
+    labels: list with T lists of labels, where T is the number of layers in the hierarchy (N labels per list, one per point)
+    num_markers: target number of markers to select. num_markers<d
+    sampling_rate: selects constraints from a random sample of proportion sampling_rate (default 1)
+    n_neighbors: chooses the constraints from n_neighbors nearest neighbors (default 3)
+    epsilon: Delta is chosen to be epsilon times the norm of the smallest constraint (default 10)
+    max_constraints: maximum number of constraints to consider (default 1000)
+    method: 'centers', 'pairwise' or 'pairwise_centers' (default 'centers') 
+    redundancy: (if method=='centers') in this case not all pairwise constraints are considered 
+    but just between centers of consecutive labels plus a random fraction of constraints given by redundancy
+    if redundancy==1 all constraints between pairs of centers are considered"""
+    t = time.time()
+    [N, d] = data.shape
+    num_levels = len(labels)
+    prev_label = [1 for i in range(N)]
+    constraints = None
+    smallest_norm = np.inf
+    for i in range(num_levels):
+        s = set(prev_label)
+        for l in s:
+            if l is not None:
+                aux_data = [data[x, :]
+                            for x in range(len(labels[i])) if prev_label[x] == l]
+                aux_labels = [labels[i][x]
+                              for x in range(len(labels[i])) if prev_label[x] == l]
+                samples, samples_labels, idx = __sample(
+                    aux_data, aux_labels, sampling_rate)
+                aux_data = np.array(aux_data)
+
+                if method == 'pairwise_centers':
+                    con, sm_norm = __select_constraints_centers(
+                        aux_data, aux_labels, samples, samples_labels)
+                elif method == 'pairwise':
+                    con, sm_norm = __select_constraints_pairwise(
+                        aux_data, aux_labels, samples, samples_labels, n_neighbors)
+                else: 
+                    con, sm_norm = __select_constraints_summarized(aux_data, aux_labels, redundancy)
+
+                if constraints is not None:
+                    constraints = np.concatenate((constraints, con))
+                else:
+                    constraints = con
+                if sm_norm < smallest_norm:
+                    smallest_norm = sm_norm
+        prev_label = labels[i]
+    constraints = np.array(constraints)
+    
+    random_max_constraints = random.randint(1, constraints.shape[0])
+
+    num_cons = constraints.shape[0]
+    if num_cons > random_max_constraints:
+        p = np.random.permutation(num_cons)[0:random_max_constraints]
+        constraints = constraints[p, :]
+    if verbose:
+        print('Solving a linear program with {} variables and {} constraints'.format(constraints.shape[1], constraints.shape[0]))
+    sol = __lp_markers(constraints, num_markers, smallest_norm * epsilon)
+    if verbose:
+        print('Time elapsed: {} seconds'.format(time.time() - t))
+    x = sol['x'][0:d]
+    markers = sorted(range(len(x)), key=lambda i: x[i], reverse=True)[
+        : num_markers]
+    return markers
+
 
 def __sample(data, labels, sampling_rate):
     """subsample data"""
@@ -59,6 +124,33 @@ def __sample(data, labels, sampling_rate):
         aux = np.random.permutation(n)[0:s]
         indices += [idxs[x] for x in aux]
     return [data[i] for i in indices], [labels[i] for i in indices], indices
+
+
+def __select_constraints_summarized(data, labels, redundancy=0.01):
+    """selects constraints of the form c_a-c_(a+1) where c_i's are the empirical centers of different classes"""
+    constraints = []
+    centers = {}
+    smallest_norm = np.inf
+    labels_set = list(set(labels))
+    k = len(labels_set)
+    for idx in labels_set:
+        X = [data[x, :] for x in range(len(labels)) if labels[x] == idx]
+        centers[idx] = np.array(X).mean(axis=0)
+    for i in range(len(labels_set)):
+        v = centers[labels_set[i]]-centers[labels_set[(i+1) % k]]
+        constraints += [v]
+        if np.linalg.norm(v) ** 2 < smallest_norm:
+            smallest_norm = np.linalg.norm(v) ** 2
+        for j in range(len(labels_set)):
+            if j != i and j != (i+1) % k:
+                if np.random.rand() < redundancy:
+                    v = centers[labels_set[j]]-centers[labels_set[(j+1) % k]]
+                    constraints += [v]
+                    if np.linalg.norm(v) ** 2 < smallest_norm:
+                        smallest_norm = np.linalg.norm(v) ** 2
+    constraints = np.array(constraints)
+    return -constraints * constraints, smallest_norm
+
 
 
 def __select_constraints_pairwise(data, labels, samples, samples_labels, n_neighbors):
@@ -88,6 +180,33 @@ def __select_constraints_pairwise(data, labels, samples, samples_labels, n_neigh
                             smallest_norm = np.linalg.norm(v) ** 2
     constraints = np.array(constraints)
     return -constraints * constraints, smallest_norm
+
+def __select_constraints_centers(data, labels, samples, samples_labels):
+    """select constraints of the form (x-ct')^2 - (x-ct)^2> Delta^2 y where x belongs to cluster with center ct"""
+    constraints = []
+    # nearest neighbors are selected from the entire set
+    centers_by_label = {}
+    smallest_norm = np.inf
+    for i in set(labels):
+        X = np.array([data[x, :]
+                      for x in range(len(labels)) if labels[x] == i])
+        centers_by_label[i] = np.sum(X, axis=0) / X.shape[0]
+    # compute nearest neighbor for samples
+    for p in range(len(samples)):
+        # distance to it's own center
+        aux0 = (samples[p] - centers_by_label[samples_labels[p]]) * \
+            (samples[p] - centers_by_label[samples_labels[p]])
+        for i in set(labels):
+            if samples_labels[p] != i:
+                # distance to other centers
+                aux1 = (samples[p] - centers_by_label[i]) * \
+                    (samples[p] - centers_by_label[i])
+                constraints += [aux0 - aux1]
+                if np.linalg.norm(aux0 - aux1) < smallest_norm:
+                    smallest_norm = np.linalg.norm(aux0-aux1)
+    constraints = np.array(constraints)
+    return constraints, smallest_norm
+
 
 
 def __lp_markers(constraints, num_markers, epsilon):
@@ -257,8 +376,31 @@ def load_example_data(name):
         a = scipy.io.loadmat(data_files.get_data("CITEseq_names.mat"))
         names=[a['citeseq_names'][i][0][0] for i in range(N)]
         return [data, labels, names]
+    elif name=="zeisel":
+        #load data from file
+        a = scipy.io.loadmat(data_files.get_data("zeisel_data.mat"))
+        data= a['zeisel_data'].T
+        N,d=data.shape
+
+        #load labels (first level of the hierarchy) from file
+        a = scipy.io.loadmat(data_files.get_data("zeisel_labels1.mat"))
+        l_aux = a['zeisel_labels1']
+        l_0=[l_aux[i][0] for i in range(l_aux.shape[0])]
+        #load labels (second level of the hierarchy) from file
+        a = scipy.io.loadmat(data_files.get_data("zeisel_labels2.mat"))
+        l_aux = a['zeisel_labels2']
+        l_1=[l_aux[i][0] for i in range(l_aux.shape[0])]
+        #construct an array with hierarchy labels
+        labels=np.array([l_0, l_1])
+
+        # load names from file 
+        a = scipy.io.loadmat(data_files.get_data("zeisel_names.mat"))
+        names0=[a['zeisel_names'][i][0][0] for i in range(N)]
+        names1=[a['zeisel_names'][i][1][0] for i in range(N)]
+        return [data, labels, [names0,names1]]
     else:
-        print("currently available options is only 'CITEseq'")
+        print("currently available options are only 'CITEseq' and 'zeisel'")
+
 
 
 
